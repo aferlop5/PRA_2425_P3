@@ -1,35 +1,55 @@
 #ifndef TABLEENTRY_H
 #define TABLEENTRY_H
 
+#include <iostream>
 #include <string>
-#include <ostream>
 
 template <typename V>
 class TableEntry {
 public:
     // Atributos públicos
-    std::string key;
-    V value;
+    std::string key;  // Clave del par
+    V value;          // Valor del par
 
-    // Constructores
-    TableEntry(std::string key, V value) : key(key), value(value) {}
-    TableEntry(std::string key) : key(key), value(V()) {} // Usa el constructor por defecto de V
-    TableEntry() : key(""), value(V()) {} // Clave vacía y valor por defecto de V
+    // Constructor que inicializa con clave y valor
+    TableEntry(std::string key, V value)
+        : key(key), value(value) {}
 
-    // Sobrecarga de operadores
-    friend bool operator==(const TableEntry<V> &te1, const TableEntry<V> &te2) {
+    // Constructor que inicializa solo con la clave
+    TableEntry(std::string key)
+        : key(key), value(V{}) {}
+
+    // Constructor por defecto con clave vacía y valor predeterminado
+    TableEntry()
+        : key(""), value(V{}) {}
+
+    // Sobrecarga del operador == para comparar solo la clave
+    friend bool operator==(const TableEntry<V>& te1, const TableEntry<V>& te2) {
         return te1.key == te2.key;
     }
 
-    friend bool operator!=(const TableEntry<V> &te1, const TableEntry<V> &te2) {
+    // Sobrecarga del operador != para comparar solo la clave
+    friend bool operator!=(const TableEntry<V>& te1, const TableEntry<V>& te2) {
         return te1.key != te2.key;
     }
 
-    friend std::ostream& operator<<(std::ostream &out, const TableEntry<V> &te) {
+    // Sobrecarga del operador << para imprimir el contenido de la entrada
+    friend std::ostream& operator<<(std::ostream& out, const TableEntry<V>& te) {
         out << "{" << te.key << " -> " << te.value << "}";
         return out;
     }
+    
+    // Sobrecarga del operador < para comparar las claves
+    friend bool operator<(const TableEntry<V>& te1, const TableEntry<V>& te2) {
+        return te1.key < te2.key;  // Comparación lexicográfica de las claves
+    }
+
+    // Sobrecarga del operador > para comparar las claves
+    friend bool operator>(const TableEntry<V>& te1, const TableEntry<V>& te2) {
+        return te1.key > te2.key;  // Comparación lexicográfica de las claves
+    }
 };
 
-#endif // TABLEENTRY_H
+
+#endif
 
